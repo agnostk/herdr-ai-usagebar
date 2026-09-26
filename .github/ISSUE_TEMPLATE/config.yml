@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report
+    url: https://github.com/agnostk/herdr-ai-usagebar/security/advisories/new
+    about: Report vulnerabilities privately, not as a public issue.
+  - name: Troubleshooting guide
+    url: https://github.com/agnostk/herdr-ai-usagebar/blob/main/docs/troubleshooting.md
+    about: Nothing in the sidebar, "ai-usagebar not found", "(stale)"? Most answers are here.
+  - name: ai-usagebar issues
+    url: https://github.com/akitaonrails/ai-usagebar/issues
+    about: Wrong numbers or a provider error that ai-usagebar itself also shows belong upstream.

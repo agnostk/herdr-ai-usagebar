@@ -1,0 +1,90 @@
+name: Bug report
+description: Something in the plugin does not work as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Redact before you paste.** Remove API keys, tokens and anything else
+        you would not publish from logs, `status` output, and config files.
+        Plan names and percentages are fine. Security problems go through
+        [a private report](https://github.com/agnostk/herdr-ai-usagebar/security/advisories/new) instead.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What did you see in the sidebar, pane or log?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. ...
+        2. ...
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version or commit
+      description: "`herdr plugin list --plugin agnostk.ai-usagebar --json` shows the version and resolved commit."
+    validations:
+      required: true
+
+  - type: input
+    id: herdr-version
+    attributes:
+      label: herdr version
+      description: Output of `herdr --version`.
+    validations:
+      required: true
+
+  - type: input
+    id: ai-usagebar-version
+    attributes:
+      label: ai-usagebar version
+      description: Output of `ai-usagebar --version`.
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: OS
+      placeholder: e.g. macOS 16.1, Ubuntu 24.04
+    validations:
+      required: true
+
+  - type: textarea
+    id: status
+    attributes:
+      label: status output and refresher log
+      description: |
+        Run `herdr plugin action invoke agnostk.ai-usagebar.status`, then
+        `herdr plugin log list --plugin agnostk.ai-usagebar --limit 1`. Add the
+        relevant lines of the `daemon.log` it names. Redacted.
+      render: text
+
+  - type: dropdown
+    id: ai
+    attributes:
+      label: AI involvement
+      description: Any amount is fine; this is context for the reviewer.
+      options:
+        - no AI
+        - AI-assisted, I reviewed everything
+        - an agent filed this on my behalf
+    validations:
+      required: true

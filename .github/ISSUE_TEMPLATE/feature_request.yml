@@ -1,0 +1,36 @@
+name: Feature request
+description: A new provider mapping, sidebar format, action, or other idea
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to see or do that the plugin does not support?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: How you would like it to work. Mock sidebar rows are welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds, such as a custom sidebar layout, and why they fall short.
+
+  - type: dropdown
+    id: ai
+    attributes:
+      label: AI involvement
+      options:
+        - no AI
+        - AI-assisted, I reviewed everything
+        - an agent filed this on my behalf
+    validations:
+      required: true
