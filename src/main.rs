@@ -211,7 +211,9 @@ fn tui() -> Result<()> {
 #[cfg(unix)]
 fn exec(path: &std::path::Path) -> Result<()> {
     use std::os::unix::process::CommandExt;
-    let error = std::process::Command::new(path).exec();
+    // exec only returns on failure.
+    let error = proc::retry_while_busy(|| Err::<(), _>(std::process::Command::new(path).exec()))
+        .unwrap_err();
     Err(anyhow::Error::new(error).context(format!("cannot run {}", path.display())))
 }
 

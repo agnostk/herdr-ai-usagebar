@@ -8,6 +8,7 @@ use std::time::{Duration, Instant};
 use anyhow::{Context, Result, bail};
 
 const POLL: Duration = Duration::from_millis(20);
+const BUSY_RETRIES: u32 = 20;
 
 #[derive(Debug)]
 pub struct Output {
@@ -40,9 +41,8 @@ pub fn run(command: &mut Command, timeout: Duration) -> Result<Output> {
         // Its own group, so a timeout can kill everything it started.
         command.process_group(0);
     }
-    let mut child = command
-        .spawn()
-        .with_context(|| format!("cannot run {program}"))?;
+    let mut child =
+        retry_while_busy(|| command.spawn()).with_context(|| format!("cannot run {program}"))?;
 
     let stdout = drain(child.stdout.take());
     let stderr = drain(child.stderr.take());
@@ -65,6 +65,26 @@ pub fn run(command: &mut Command, timeout: Duration) -> Result<Output> {
         stdout: stdout.join().unwrap_or_default(),
         stderr: stderr.join().unwrap_or_default(),
     })
+}
+
+/// Retry an exec that failed with ETXTBSY. Linux refuses to execute a file
+/// that some process still holds open for writing, which happens briefly
+/// while a binary is being replaced (an ai-usagebar upgrade) or when another
+/// thread forks right after the file was written.
+pub fn retry_while_busy<T>(mut attempt: impl FnMut() -> std::io::Result<T>) -> std::io::Result<T> {
+    let mut tries = 0;
+    loop {
+        match attempt() {
+            Err(error)
+                if error.kind() == std::io::ErrorKind::ExecutableFileBusy
+                    && tries < BUSY_RETRIES =>
+            {
+                tries += 1;
+                thread::sleep(POLL);
+            }
+            result => return result,
+        }
+    }
 }
 
 fn kill_tree(child: &mut Child) {
@@ -140,6 +160,57 @@ mod tests {
             assert!(Instant::now() < deadline, "grandchild {pid} survived");
             thread::sleep(Duration::from_millis(20));
         }
+    }
+
+    #[test]
+    fn retry_while_busy_retries_only_busy_errors() {
+        use std::io::{Error, ErrorKind};
+        let mut calls = 0;
+        let result = retry_while_busy(|| {
+            calls += 1;
+            if calls < 3 {
+                Err(Error::from(ErrorKind::ExecutableFileBusy))
+            } else {
+                Ok(calls)
+            }
+        });
+        assert_eq!(result.unwrap(), 3);
+
+        let mut calls = 0;
+        let result: std::io::Result<()> = retry_while_busy(|| {
+            calls += 1;
+            Err(Error::from(ErrorKind::NotFound))
+        });
+        assert_eq!(result.unwrap_err().kind(), ErrorKind::NotFound);
+        assert_eq!(calls, 1);
+
+        let mut calls = 0;
+        let result: std::io::Result<()> = retry_while_busy(|| {
+            calls += 1;
+            Err(Error::from(ErrorKind::ExecutableFileBusy))
+        });
+        assert!(result.is_err());
+        assert_eq!(calls, BUSY_RETRIES + 1);
+    }
+
+    /// Linux reports ETXTBSY while a writer holds the file; macOS does not.
+    #[cfg(target_os = "linux")]
+    #[test]
+    fn runs_a_script_once_its_writer_closes() {
+        use std::io::Write;
+        use std::os::unix::fs::PermissionsExt;
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("busy.sh");
+        let mut writer = std::fs::File::create(&path).unwrap();
+        writer.write_all(b"#!/bin/sh\necho ran\n").unwrap();
+        std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o755)).unwrap();
+        let closer = thread::spawn(move || {
+            thread::sleep(Duration::from_millis(100));
+            drop(writer);
+        });
+        let output = run(&mut Command::new(&path), Duration::from_secs(5)).unwrap();
+        closer.join().unwrap();
+        assert_eq!(output.stdout, "ran\n");
     }
 
     #[test]

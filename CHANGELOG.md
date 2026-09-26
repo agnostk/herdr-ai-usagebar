@@ -19,6 +19,11 @@ All notable changes to this plugin are recorded here. The format follows
 - Integration tests that run the plugin binary against a fake herdr, and
   validation of `herdr-plugin.toml`.
 
+### Fixed
+
+- Running a program that is briefly busy (Linux `ETXTBSY`, for example while
+  `ai-usagebar` is being upgraded) is retried instead of failing that refresh.
+
 ## [0.1.0] - 2026-09-26
 
 First release.
