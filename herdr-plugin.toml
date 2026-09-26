@@ -1,0 +1,71 @@
+id = "agnostk.ai-usagebar"
+name = "AI Usage"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "ai-usagebar plan usage (Claude, Codex, Copilot, ...) in the herdr sidebar"
+platforms = ["linux", "macos"]
+
+[[build]]
+command = ["cargo", "build", "--release", "--locked"]
+
+# Launch the background refresher once the herdr server is up.
+[[startup]]
+command = ["target/release/herdr-ai-usagebar", "start"]
+
+# Startup hooks do not run when a plugin is first installed or enabled, so
+# these also start the refresher without waiting for a herdr restart. Each
+# is a no-op while the refresher is running.
+[[events]]
+on = "pane.agent_detected"
+command = ["target/release/herdr-ai-usagebar", "start"]
+
+[[events]]
+on = "workspace.created"
+command = ["target/release/herdr-ai-usagebar", "start"]
+
+[[events]]
+on = "workspace.focused"
+command = ["target/release/herdr-ai-usagebar", "start"]
+
+[[actions]]
+id = "setup-sidebar"
+title = "AI usage: add usage rows to the sidebar"
+description = "Add the $ai_usage row to herdr's agent and space sidebar layouts (backs up config.toml first)"
+contexts = ["global"]
+command = ["target/release/herdr-ai-usagebar", "setup-sidebar"]
+
+[[actions]]
+id = "refresh"
+title = "AI usage: refresh now"
+description = "Re-run ai-usagebar now and start the background refresher if it is not running"
+contexts = ["global"]
+command = ["target/release/herdr-ai-usagebar", "refresh"]
+
+[[actions]]
+id = "dashboard"
+title = "AI usage: open dashboard"
+description = "Open ai-usagebar-tui in a popup"
+contexts = ["global"]
+command = ["target/release/herdr-ai-usagebar", "dashboard"]
+
+[[actions]]
+id = "status"
+title = "AI usage: show status"
+description = "Print refresher state and the last ai-usagebar result to the plugin log"
+contexts = ["global"]
+command = ["target/release/herdr-ai-usagebar", "status"]
+
+[[actions]]
+id = "stop"
+title = "AI usage: stop and clear the sidebar"
+description = "Stop the background refresher for this session and remove the usage tokens"
+contexts = ["global"]
+command = ["target/release/herdr-ai-usagebar", "stop"]
+
+[[panes]]
+id = "dashboard"
+title = "AI usage"
+placement = "popup"
+width = "80%"
+height = "80%"
+command = ["target/release/herdr-ai-usagebar", "tui"]

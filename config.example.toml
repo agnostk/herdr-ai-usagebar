@@ -1,0 +1,48 @@
+# herdr-ai-usagebar settings. Every line is optional; the values shown are
+# the defaults. Edit, then run the plugin's `refresh` action (or wait for the
+# next refresh) to apply.
+
+# Path to the ai-usagebar binary. By default the plugin searches PATH, then
+# ~/.cargo/bin, ~/.local/bin, /opt/homebrew/bin, /usr/local/bin and the Nix
+# profile directories.
+# ai_usagebar = "/path/to/ai-usagebar"
+
+# Seconds between `ai-usagebar usage --json` runs. ai-usagebar caches each
+# provider for 60 seconds, so going lower only re-reads its cache.
+# refresh_secs = 60
+
+# Seconds between checks for new, moved or closed agents and workspaces.
+# scan_secs = 5
+
+# Give up on a single `ai-usagebar usage` run after this many seconds.
+# fetch_timeout_secs = 90
+
+# Usage windows shown per agent row, in ai-usagebar's order (for Claude:
+# 5h session, then 7d weekly, then per-model weekly windows).
+# max_windows = 2
+
+# Report the $ai_usage token on agent rows.
+# agent_rows = true
+
+# What the $ai_usage token shows on workspace (space) rows:
+#   "agents" - providers of the agents running in that workspace
+#   "all"    - every provider ai-usagebar reports, on every workspace
+#   "off"    - nothing
+# workspace_rows = "agents"
+
+# Which ai-usagebar entries each herdr agent uses. Keys are herdr's canonical
+# agent ids (`herdr agent list`); values are ai-usagebar entry ids
+# (`ai-usagebar usage --json`), tried in order until one reports usage. An id
+# also matches its named accounts, so "anthropic" covers "anthropic@work".
+# Entries here replace the default for that agent only; use [] to hide one.
+# [agents]
+# claude = ["anthropic", "anthropic_api"]
+# codex = ["openai"]
+# copilot = ["copilot"]
+# cursor = ["cursor"]
+# kimi = ["kimi", "moonshot"]
+# kilo = ["kilo"]
+# kiro = ["kiro"]
+# grok = ["grok", "supergrok"]
+# agy = ["antigravity"]
+# opencode = ["opencode-go"]

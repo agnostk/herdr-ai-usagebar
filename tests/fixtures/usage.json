@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "primary": null,
+  "entries": [
+    {
+      "brand": "anthropic",
+      "display_name": "Claude",
+      "error": null,
+      "fetched_at": "2026-09-26T16:05:49.518171Z",
+      "icon": "󰚩",
+      "id": "anthropic",
+      "metrics": [
+        {
+          "detail": "Resets in 4h 54m · 1% elapsed · 1pts under",
+          "headline": "percent",
+          "label": "Session (5h)",
+          "percent": 0,
+          "reset_at": "2026-09-26T21:00:00.287898Z",
+          "severity": "low",
+          "value": "0%",
+          "window_secs": 18000
+        },
+        {
+          "detail": "Resets in 2d 7h · 66% elapsed · 53pts under",
+          "headline": "percent",
+          "label": "Weekly (7d)",
+          "percent": 13,
+          "reset_at": "2026-09-29T00:00:00.287949Z",
+          "severity": "low",
+          "value": "13%",
+          "window_secs": 604800
+        },
+        {
+          "detail": "Resets in 2d 7h",
+          "headline": "percent",
+          "label": "Fable (7d)",
+          "percent": 4,
+          "reset_at": "2026-09-29T00:00:00.288166Z",
+          "severity": "low",
+          "value": "4%",
+          "window_secs": 604800
+        }
+      ],
+      "name": "anthropic",
+      "plan": "Claude Max",
+      "reset_credits": {
+        "available": 1,
+        "credits": [
+          {
+            "expires_at": "2026-10-22T16:00:00Z",
+            "title": "Claude Opus 5.5 launch: one usage-limit reset for Pro and Max"
+          }
+        ]
+      },
+      "short_name": "cld",
+      "stale": false,
+      "status": "ready"
+    },
+    {
+      "brand": "openai",
+      "display_name": "Codex",
+      "error": null,
+      "fetched_at": "2026-09-26T16:05:50.365929Z",
+      "icon": "󱢆",
+      "id": "openai",
+      "metrics": [
+        {
+          "detail": "Resets in 4h 59m · 0% elapsed · on track",
+          "headline": "percent",
+          "label": "Codex 5h",
+          "percent": 0,
+          "reset_at": "2026-09-26T21:05:49Z",
+          "severity": "low",
+          "value": "0%",
+          "window_secs": 18000
+        },
+        {
+          "detail": "Resets in 6d 23h · 0% elapsed · on track",
+          "headline": "percent",
+          "label": "Codex weekly",
+          "percent": 0,
+          "reset_at": "2026-10-03T16:05:49Z",
+          "severity": "low",
+          "value": "0%",
+          "window_secs": 604800
+        },
+        {
+          "detail": "Resets in 6d 23h",
+          "headline": "percent",
+          "label": "gpt-reserve (7d)",
+          "percent": 0,
+          "reset_at": "2026-10-03T16:05:49Z",
+          "severity": "low",
+          "value": "0%",
+          "window_secs": 604800
+        }
+      ],
+      "name": "openai",
+      "plan": "ChatGPT Plus",
+      "reset_credits": {
+        "available": 3,
+        "credits": [
+          {
+            "expires_at": "2026-10-04T00:46:48.609636Z",
+            "title": "Full reset (Weekly + 5 hr)"
+          },
+          {
+            "expires_at": "2026-10-04T22:07:04.264375Z",
+            "title": "Full reset (Weekly + 5 hr)"
+          },
+          {
+            "expires_at": "2026-10-22T18:18:20.204492Z",
+            "title": "Full reset (Weekly + 5 hr)"
+          }
+        ]
+      },
+      "short_name": "gpt",
+      "stale": false,
+      "status": "ready"
+    },
+    {
+      "brand": "copilot",
+      "display_name": "GitHub Copilot",
+      "error": null,
+      "fetched_at": "2026-09-26T16:05:51.129658Z",
+      "icon": "󰊤",
+      "id": "copilot",
+      "metrics": [
+        {
+          "detail": "Unlimited",
+          "headline": "percent",
+          "label": "Premium requests",
+          "percent": 0,
+          "reset_at": "2026-10-01T00:00:00Z",
+          "severity": "low",
+          "value": "Unlimited"
+        },
+        {
+          "detail": "Unlimited",
+          "headline": "percent",
+          "label": "Chat",
+          "percent": 0,
+          "reset_at": "2026-10-01T00:00:00Z",
+          "severity": "low",
+          "value": "Unlimited"
+        },
+        {
+          "detail": "Unlimited",
+          "headline": "percent",
+          "label": "Completions",
+          "percent": 0,
+          "reset_at": "2026-10-01T00:00:00Z",
+          "severity": "low",
+          "value": "Unlimited"
+        }
+      ],
+      "name": "copilot",
+      "plan": "GitHub Copilot",
+      "reset_credits": null,
+      "short_name": "ghc",
+      "stale": false,
+      "status": "ready"
+    },
+    {
+      "brand": "zai",
+      "display_name": "Z.AI",
+      "error": "credentials error: Zai: no API key. Either set an API key in a valid environment variable or set `api_key` under [zai] in ~/.config/ai-usagebar/config.toml.",
+      "fetched_at": null,
+      "icon": "zai",
+      "id": "zai",
+      "metrics": [],
+      "name": "zai",
+      "plan": null,
+      "reset_credits": null,
+      "short_name": "zai",
+      "stale": false,
+      "status": "error"
+    }
+  ]
+}

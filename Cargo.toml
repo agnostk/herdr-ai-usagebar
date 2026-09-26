@@ -1,0 +1,27 @@
+[package]
+name = "herdr-ai-usagebar"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.89"
+license = "MIT"
+description = "herdr plugin that shows ai-usagebar AI plan usage in the herdr sidebar"
+repository = "https://github.com/agnostk/herdr-ai-usagebar"
+readme = "README.md"
+keywords = ["herdr", "herdr-plugin", "ai-usagebar", "claude", "codex"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+anyhow = "1.0.104"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"
+tempfile = "3.27.0"
+toml = "1.1.6"
+toml_edit = "0.25.15"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+
+[target."cfg(unix)".dependencies]
+rustix = { version = "1", features = ["process"] }
