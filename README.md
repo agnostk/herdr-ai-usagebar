@@ -152,11 +152,12 @@ end-to-end check that runs the plugin inside a real, sandboxed herdr.
 
 ## Acknowledgements
 
-[ai-usagebar](https://github.com/akitaonrails/ai-usagebar) by AkitaOnRails
-does the hard part: talking to every provider. [herdr](https://herdr.dev), by
+[ai-usagebar](https://github.com/akitaonrails/ai-usagebar), by
+[@akitaonrails](https://github.com/akitaonrails), does the hard part: talking
+to every provider. [herdr](https://herdr.dev), by
 [@ogulcancelik](https://github.com/ogulcancelik), provides the sidebar and the
-plugin API. This is an independent
-community plugin, not affiliated with either project.
+plugin API. This is an independent community plugin, not affiliated with
+either project.
 
 ## License
 
