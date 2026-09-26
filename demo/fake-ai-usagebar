@@ -5,10 +5,10 @@
 # fetch shows stage 1 and the next one (the demo's `refresh`) shows stage 2.
 set -eu
 
-[ "${1:-}" = "usage" ] && [ "${2:-}" = "--json" ] || {
+if [ "${1:-}" != "usage" ] || [ "${2:-}" != "--json" ]; then
   echo "fake-ai-usagebar only answers 'usage --json'" >&2
   exit 2
-}
+fi
 
 stage=1
 if [ -n "${DEMO_STAGE_FILE:-}" ] && [ -f "$DEMO_STAGE_FILE" ]; then

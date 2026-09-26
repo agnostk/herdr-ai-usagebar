@@ -30,8 +30,10 @@ json() { # extract a value from JSON on stdin: json '["result"]["workspace"]["wo
 }
 
 wait_for_server() {
+  # An API call, not `herdr status server`: the server can report itself
+  # running before its API socket accepts requests.
   local deadline=$((SECONDS + ${SANDBOX_START_TIMEOUT:-30}))
-  until "$HERDR" status server >/dev/null 2>&1; do
+  until "$HERDR" workspace list >/dev/null 2>&1; do
     if [ "$SECONDS" -ge "$deadline" ]; then
       echo "sandbox herdr server did not start; see $SANDBOX/server.log" >&2
       return 1
