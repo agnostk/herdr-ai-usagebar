@@ -1,0 +1,11 @@
+# herdr config for the demo sandbox: herdr's defaults, minus first-run setup.
+# The sidebar starts without the usage rows so the demo can add them.
+# @REPO@ is replaced with the repository path by demo/sandbox.sh.
+onboarding = false
+
+[ui]
+sidebar_width = 30
+
+[terminal]
+default_shell = "@REPO@/demo/shell"
+shell_mode = "non_login"

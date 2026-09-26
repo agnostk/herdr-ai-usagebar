@@ -1,0 +1,44 @@
+#!/bin/sh
+# Stand-in for `ai-usagebar usage --json` with made-up numbers, so the demo is
+# reproducible and shows no real account. DEMO_STAGE_FILE holds the snapshot
+# the next call prints and advances after each call, so the refresher's first
+# fetch shows stage 1 and the next one (the demo's `refresh`) shows stage 2.
+set -eu
+
+[ "${1:-}" = "usage" ] && [ "${2:-}" = "--json" ] || {
+  echo "fake-ai-usagebar only answers 'usage --json'" >&2
+  exit 2
+}
+
+stage=1
+if [ -n "${DEMO_STAGE_FILE:-}" ] && [ -f "$DEMO_STAGE_FILE" ]; then
+  stage=$(cat "$DEMO_STAGE_FILE")
+  if [ "$stage" -lt 2 ]; then echo $((stage + 1)) > "$DEMO_STAGE_FILE"; fi
+fi
+
+case "$stage" in
+  2) cld_5h=71 cld_7d=58 gpt_5h=93 gpt_7d=86 ghc=21 ;;
+  *) cld_5h=38 cld_7d=54 gpt_5h=64 gpt_7d=81 ghc=18 ;;
+esac
+
+metric() { # label percent window_secs
+  window=""
+  [ -n "$3" ] && window=", \"window_secs\": $3"
+  printf '{"label": "%s", "percent": %s, "value": "%s%%", "headline": "percent", "severity": "low"%s}' \
+    "$1" "$2" "$2" "$window"
+}
+
+cat <<EOF
+{
+  "schema_version": 1,
+  "primary": "anthropic",
+  "entries": [
+    {"id": "anthropic", "display_name": "Claude", "short_name": "cld", "status": "ready", "stale": false,
+     "metrics": [$(metric "Session (5h)" "$cld_5h" 18000), $(metric "Weekly (7d)" "$cld_7d" 604800)]},
+    {"id": "openai", "display_name": "Codex", "short_name": "gpt", "status": "ready", "stale": false,
+     "metrics": [$(metric "Codex 5h" "$gpt_5h" 18000), $(metric "Codex weekly" "$gpt_7d" 604800)]},
+    {"id": "copilot", "display_name": "GitHub Copilot", "short_name": "ghc", "status": "ready", "stale": false,
+     "metrics": [$(metric "Premium requests" "$ghc" "")]}
+  ]
+}
+EOF

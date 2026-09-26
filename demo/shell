@@ -1,0 +1,6 @@
+#!/bin/sh
+# Pane shell for the demo recording: plain bash with a short prompt, so the
+# recording shows nothing of the recording machine's own shell setup.
+export BASH_SILENCE_DEPRECATION_WARNING=1
+export PS1='\[\033[1;34m\]\W\[\033[0m\] \$ '
+exec bash --norc --noprofile
