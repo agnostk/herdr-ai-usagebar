@@ -45,7 +45,8 @@ a whole: the refresher logs the error and keeps its previous settings.
 
 Keys are herdr's canonical agent ids, as `herdr agent list` shows them.
 Values are ai-usagebar entry ids, as `ai-usagebar usage --json` shows them in
-`entries[].id`. The plugin tries the ids in order and uses the first one that
+`entries[].id`; the README lists
+[every provider's id](../README.md#supported-providers). The plugin tries the ids in order and uses the first one that
 reports usage. If none does, it shows the first one's error, so a
 misconfigured provider is visible rather than silently missing.
 

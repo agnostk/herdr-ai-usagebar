@@ -2,8 +2,8 @@
 
 <p align="center">
   <strong>Your AI plan usage, right in the <a href="https://herdr.dev">herdr</a> sidebar.</strong><br>
-  Claude, Codex, Copilot and every other provider
-  <a href="https://github.com/akitaonrails/ai-usagebar">ai-usagebar</a> tracks, next to the agents spending it.
+  Claude, Codex, GitHub Copilot, Cursor, Grok, Z.AI, OpenRouter and
+  <a href="#supported-providers">17 more providers</a>, next to the agents spending them.
 </p>
 
 <p align="center">
@@ -20,6 +20,7 @@
 </p>
 
 <p align="center">
+  <a href="#supported-providers">Providers</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="#what-you-see">What you see</a> ·
   <a href="#actions">Actions</a> ·
@@ -33,6 +34,55 @@ Running several coding agents at once makes it easy to burn through a
 [ai-usagebar](https://github.com/akitaonrails/ai-usagebar)'s quota numbers in
 herdr's sidebar, where you already watch your agents. Each agent row shows the
 plan *that agent* spends, and each workspace row sums up its agents.
+
+> [!IMPORTANT]
+> This plugin is a herdr front end for
+> [ai-usagebar](https://github.com/akitaonrails/ai-usagebar), which does the
+> actual talking to each provider.
+> [Install ai-usagebar](https://github.com/akitaonrails/ai-usagebar#install)
+> first; the [quick start](#quick-start) shows the short version.
+
+## Supported providers
+
+Every provider ai-usagebar supports works here: 24 built in as of
+ai-usagebar 1.25, plus your own. Ten herdr agents are matched to their
+provider out of the box, so their agent rows show usage with no configuration.
+
+| Provider | ai-usagebar id | Agent row by default |
+|----------|----------------|----------------------|
+| Claude (Pro / Max subscription) | `anthropic` | `claude` |
+| Anthropic API (admin key) | `anthropic_api` | `claude`, if `anthropic` isn't reporting |
+| Codex (ChatGPT plan) | `openai` | `codex` |
+| GitHub Copilot | `copilot` | `copilot` |
+| Cursor | `cursor` | `cursor` |
+| Kiro CLI | `kiro` | `kiro` |
+| Kimi (Kimi Code) | `kimi` | `kimi` |
+| Moonshot | `moonshot` | `kimi`, if `kimi` isn't reporting |
+| Kilo | `kilo` | `kilo` |
+| Grok (xAI API) | `grok` | `grok` |
+| SuperGrok | `supergrok` | `grok`, if `grok` isn't reporting |
+| Google Antigravity | `antigravity` | `agy` |
+| OpenCode Go | `opencode-go` | `opencode` |
+| Z.AI (GLM) | `zai` | — |
+| OpenRouter | `openrouter` | — |
+| DeepSeek | `deepseek` | — |
+| Novita | `novita` | — |
+| MiniMax (Token Plan) | `minimax` | — |
+| Grok Bot | `grokbot` | — |
+| Nous Research | `nous` | — |
+| Command Code | `commandcode` | — |
+| Ollama Cloud | `ollama` | — |
+| OrcaRouter | `orcarouter` | — |
+| Model Studio (Alibaba Cloud) | `modelstudio` | — |
+| Custom providers (`[[custom]]` in ai-usagebar) | `custom:<id>` | — |
+
+Providers marked — still show up. Every provider appears on space rows with
+`workspace_rows = "all"`, and you can put any provider on any agent's row,
+for example an OpenRouter-backed agent, with one line of
+[agent mapping](docs/configuration.md#agent-mapping): `amp = ["openrouter"]`.
+Named accounts (`anthropic@work`) work the same way. See ai-usagebar's
+[authentication guide](https://github.com/akitaonrails/ai-usagebar#authentication)
+for how each provider signs in.
 
 ## Features
 
@@ -55,18 +105,29 @@ plan *that agent* spends, and each workspace row sums up its agents.
 
 ## Quick start
 
-You need herdr 0.9.0 or newer on Linux or macOS,
-[ai-usagebar](https://github.com/akitaonrails/ai-usagebar#install) set up so
-that `ai-usagebar usage --json` lists your providers, and a Rust toolchain
-(herdr builds the plugin on install).
+You need herdr 0.9.0 or newer on Linux or macOS, and a Rust toolchain: herdr
+builds the plugin on install.
+
+**1. Install ai-usagebar** and turn on the providers you already use.
+`cargo install` works on Linux and macOS; the
+[ai-usagebar install guide](https://github.com/akitaonrails/ai-usagebar#install)
+also covers the AUR, Nix and prebuilt binaries.
+
+```sh
+cargo install ai-usagebar
+ai-usagebar detect    # enables providers whose logins or keys already exist
+ai-usagebar usage     # should list your providers and their usage
+```
+
+**2. Install the plugin and add the sidebar rows:**
 
 ```sh
 herdr plugin install agnostk/herdr-ai-usagebar
 herdr plugin action invoke agnostk.ai-usagebar.setup-sidebar
 ```
 
-That's it: usage appears within a few seconds. The first command previews
-what the plugin will run before it builds; the second adds the `$ai_usage`
+That's it: usage appears within a few seconds. `plugin install` previews what
+the plugin will run before it builds, and `setup-sidebar` adds the `$ai_usage`
 rows to your sidebar layout. From then on the refresher starts with herdr.
 
 ## What you see
